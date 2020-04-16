@@ -1,0 +1,19 @@
+---
+
+- hosts: <server ip>
+  become: true
+  tasks:
+  - name: Create Dockerimage using Dockerfile
+    command: docker build -f /opt/Dockerfile -t latest .
+  - name: Login to aws ecr
+    command: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 540174626130.dkr.ecr.us-east-2.amazonaws.com/nodejs-test
+  - name: Tag the image
+    command: docker tag latest 540174626130.dkr.ecr.us-east-2.amazonaws.com/nodejs-test:latest
+  - name: Push the image
+    command: docker push 540174626130.dkr.ecr.us-east-2.amazonaws.com/nodejs-test:latest		
+  - name: Create Deployment
+    command: kubectl create -f nodejs-deployment.yaml
+  - name: Create Service
+    command: kubectl create -f nodejs-service.yaml
+  - name: Create Autoscaling Group
+    command: kubectl create -f nodejs-autoscaling.yaml
