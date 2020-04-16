@@ -16,7 +16,7 @@ spec:
       target:
         type: Utilization
         averageUtilizationPercentage: 50
-	  name: memory
+	name: memory
       target:
         type: Utilization
         averageUtilizationPercentage: 60
